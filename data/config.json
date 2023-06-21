@@ -1,0 +1,28 @@
+{
+  "default": {
+    "variables": {
+      "meta_description": "Automatically generated error page."
+    },
+    "environment": true,
+    "environment_filter": "PROXY_"
+  },
+  "server": [
+    {
+      "request": {
+        "path": "/status_400.html",
+        "response": 400
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 400,
+        "status_text": "Bad Request",
+        "status_description": "The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing).",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "error",
+          "service": "working"
+        }
+      }
+    }
+  ]
+}

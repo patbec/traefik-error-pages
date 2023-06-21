@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Reverse Proxy - Error {{ status_code }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=3.0">
+    <meta name="robots" content="nofollow">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Background color for themes -->
+    <meta name="theme-color" media="(prefers-color-scheme:light)" content="#FFFFFF">
+    <meta name="theme-color" media="(prefers-color-scheme:dark)" content="#EBEBEB">
+
+    <!-- Meta informations -->
+    <meta name="url" content="https://github.com/patbec/traefik-error-pages">
+    <meta name="author" content="Patrick Becker">
+    <meta name="description" content="{{ meta_description | escape }}" />
+
+    <style>
+        :root {
+            --color-primary: #404040;
+            --color-secondary: #7C7C7C;
+
+            --color-state-working: #A6C756;
+            --color-state-error: #AE332C;
+            --color-state-forbidden: #E1CE1D;
+            --color-state-question: #0042BD;
+
+            --color-border: #E7E7E7;
+            --color-background:
+                linear-gradient(hsl(0, 0%, 99.5%), hsl(0, 0%, 98%));
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-primary: white;
+                --color-secondary: #D8D8D8;
+
+                --color-state-working: #B9E646;
+                --color-state-error: #FF3E34;
+                --color-state-forbidden: #E1CE1D;
+                --color-state-question: #4CACF6;
+
+                --color-border: #454545;
+                --color-background:
+                    linear-gradient(hsl(0, 0%, 8.5%), hsl(0, 0%, 8.98%));
+            }
+        }
+
+        @media (forced-colors: active) {
+            :root {
+                --color-primary: CanvasText;
+                --color-secondary: CanvasText;
+
+                --color-state-working: Highlight;
+                --color-state-error: Highlight;
+                --color-state-forbidden: Highlight;
+                --color-state-question: Highlight;
+
+                --color-border: CanvasText;
+                --color-background: Canvas;
+            }
+        }
+
+        @media only screen and (max-width: 1200px) {
+
+            header div {
+                flex-direction: column !important;
+            }
+
+            header div code {
+                align-self: normal !important;
+            }
+
+
+            #info_logo {
+                display: none !important;
+            }
+        }
+
+        @media only screen and (max-width: 695px) {
+
+            main,
+            footer {
+                flex-direction: column !important;
+            }
+
+            footer {
+                margin-bottom: 5vh !important;
+            }
+
+            #arrow_horinzontal {
+                display: none !important;
+            }
+
+            #arrow_vertical {
+                display: block !important;
+            }
+        }
+
+        html,
+        body {
+            height: auto;
+            width: auto;
+
+            min-height: 100vh;
+            min-width: 280px;
+            margin: 0;
+        }
+
+        body {
+            display: grid;
+            grid-template-rows: min-content auto auto;
+
+            font-size: max(16px, 0.6vw + 0.6vh);
+            font-family: 'system-ui', 'Segoe UI', 'Roboto', 'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', 'sans-serif';
+            font-weight: normal;
+        }
+
+        h1 {
+            font-size: 3.7em;
+            font-weight: lighter;
+            letter-spacing: normal;
+            line-height: normal;
+            color: var(--color-primary);
+            margin: 0px;
+            white-space: nowrap;
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: normal;
+            letter-spacing: normal;
+            line-height: normal;
+            color: var(--color-primary);
+            margin: 0px;
+            white-space: nowrap;
+        }
+
+        h3 {
+            font-size: 2em;
+            font-weight: lighter;
+            letter-spacing: normal;
+            line-height: normal;
+            color: var(--color-secondary);
+            margin: 0px;
+            white-space: nowrap;
+        }
+
+        h4 {
+            font-size: 1.5em;
+            font-weight: 400;
+            letter-spacing: normal;
+            letter-spacing: normal;
+            line-height: 1.6;
+            color: var(--color-primary);
+            margin: 0px;
+            white-space: nowrap;
+        }
+
+        p {
+            font-size: 1em;
+            color: var(--color-primary);
+            letter-spacing: normal;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        a {
+            font-size: 1em;
+            text-decoration: none;
+        }
+
+        header {
+            margin: 5vh 6.5vw;
+        }
+
+        header div {
+            display: flex;
+            gap: 1em;
+        }
+
+        header div h3 {
+            flex-grow: 1;
+        }
+
+        header div code {
+            font-size: 0.8em;
+            align-self: flex-end;
+            line-break: anywhere;
+        }
+
+        main {
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            text-align: center;
+            justify-content: center;
+
+            padding-top: 6vh;
+            padding-bottom: 5vh;
+            padding-left: 5px;
+            padding-right: 5px;
+
+            border-top: thin solid var(--color-border);
+            border-bottom: thin solid var(--color-border);
+
+            background-color: var(--color-background);
+            background: var(--color-background);
+        }
+
+        footer {
+            display: flex;
+            text-align: justify;
+            gap: 2vw;
+
+            margin-left: 6.5vw;
+            margin-right: 6.5vw;
+            margin-top: 5vh;
+            margin-bottom: 2vh;
+        }
+
+        footer #container_error {
+            flex: 1;
+        }
+
+        footer #container_help {
+            flex: 1;
+            display: flex;
+            gap: 2em
+        }
+
+        footer #info_text {
+            flex-grow: 1;
+        }
+
+        footer #info_logo {
+            padding-top: 32px;
+            margin-top: 2em;
+        }
+
+        #assets {
+            display: none;
+        }
+
+        #arrow_horinzontal {
+            width: 15vw;
+            min-width: 7.5em;
+        }
+
+        #arrow_vertical {
+            display: none;
+        }
+
+        #text_error {
+            color: var(--color-state-error);
+        }
+
+        #text_working {
+            color: var(--color-state-working);
+        }
+
+        #text_forbidden {
+            color: var(--color-state-forbidden);
+        }
+
+        #text_question {
+            color: var(--color-state-question);
+        }
+
+        [data-tag] {
+            display: none;
+        }
+
+        [data-state="error"] [data-tag="error"] {
+            display: block;
+        }
+
+        [data-state="working"] [data-tag="working"] {
+            display: block;
+        }
+
+        [data-state="forbidden"] [data-tag="forbidden"] {
+            display: block;
+        }
+
+        [data-state="question"] [data-tag="question"] {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Error {{ status_code }}</h1>
+        <div>
+            <h3>{{ status_text | escape }}</h3>
+            <code>
+                <script>
+                    var name = "{{ env['PROXY_NAME'] }}"
+                    var code = "{{ status_code }}"
+
+                    var info = [];
+
+                    info.push("Router:   " + name);
+                    info.push("Status:   " + code);
+                    info.push("Location: " + window.location.hostname);
+
+                    var trace = info.join("\n");
+
+                    if (trace) {
+                        document.write('Trace-' + btoa(trace));
+                    }
+                    else {
+                        document.write('Trace string cannot be displayed');
+                    }
+                </script>
+                <noscript>
+                    Trace string cannot be displayed because Javascript is disabled
+                </noscript>
+            </code>
+        </div>
+    </header>
+
+    <svg id="assets" width="0" height="0" viewBox="0 0 100 100">
+        <g id="icon_arrow_horinzontal">
+            <path fill="var(--color-secondary)"
+                d="M30.335,63.285L12,44.951L30.335,26.715L34.475,30.855L23.336,41.994L76.664,41.994L65.525,30.855L69.764,26.715L88,44.951L69.764,63.285L65.525,59.145L76.664,47.908L23.336,47.908L34.475,59.145L30.335,63.285Z" />
+        </g>
+        <g id="icon_arrow_vertical">
+            <path fill="var(--color-secondary)"
+                d="M65.833,69.119L49.952,85L34.167,69.119L38.192,65.094L47.077,73.979L47.077,26.021L38.192,34.906L34.167,30.785L49.952,15L65.833,30.785L61.808,34.906L52.827,26.021L52.827,73.979L61.808,65.094L65.833,69.119Z" />
+        </g>
+        <g id="icon_service">
+            <path fill="var(--color-secondary)"
+                d="M29.767,78.333L21.805,78.333C20.868,78.333 20.063,78.026 19.39,77.411C18.716,76.796 18.379,75.903 18.379,74.732L18.379,51.546C18.379,50.608 18.658,49.772 19.214,49.04C19.77,48.308 20.487,47.942 21.366,47.942L78.195,47.942C79.073,47.942 79.864,48.308 80.567,49.04C81.269,49.772 81.621,50.608 81.621,51.546L81.621,74.732C81.621,75.903 81.269,76.796 80.567,77.411C79.864,78.026 79.073,78.333 78.195,78.333L70.233,78.333C70.244,78.057 70.25,77.779 70.25,77.5C70.25,75.976 70.081,74.491 69.762,73.063L76.35,73.063L76.35,53.213L23.65,53.213L23.65,73.063L30.238,73.063C29.919,74.491 29.75,75.976 29.75,77.5C29.75,77.779 29.756,78.057 29.767,78.333ZM21.366,11.667L78.546,11.667C79.483,11.667 80.23,11.945 80.786,12.501C81.342,13.057 81.621,13.813 81.621,14.768L81.621,38.368C81.621,39.389 81.342,40.244 80.786,40.934C80.23,41.625 79.483,41.97 78.546,41.97L21.366,41.97C20.487,41.97 19.77,41.625 19.214,40.934C18.658,40.244 18.379,39.389 18.379,38.368L18.379,14.768C18.379,13.813 18.658,13.057 19.214,12.501C19.77,11.945 20.487,11.667 21.366,11.667ZM23.65,36.7L76.35,36.7L76.35,16.937L23.65,16.937L23.65,36.7ZM33.038,22.383C34.26,22.383 35.3,22.807 36.156,23.656C37.012,24.505 37.44,25.541 37.44,26.764C37.44,27.987 37.015,29.026 36.166,29.882C35.317,30.738 34.281,31.166 33.058,31.166C31.835,31.166 30.796,30.741 29.94,29.892C29.084,29.043 28.656,28.007 28.656,26.785C28.656,25.562 29.081,24.522 29.93,23.666C30.779,22.811 31.815,22.383 33.038,22.383Z" />
+        </g>
+        <g id="icon_proxy">
+            <path fill="var(--color-secondary)"
+                d="M29.767,78.333L26.347,78.333C20.226,78.333 15.027,76.195 10.75,71.917C6.472,67.64 4.333,62.44 4.333,56.32C4.333,50.895 6.072,46.13 9.55,42.027C13.027,37.923 17.444,35.454 22.8,34.619C24.191,27.873 27.46,22.36 32.607,18.083C37.754,13.805 43.7,11.667 50.447,11.667C58.237,11.667 64.81,14.501 70.165,20.17C75.521,25.838 78.199,32.637 78.199,40.566L78.199,43.07C83.207,42.931 87.449,44.548 90.927,47.921C94.405,51.295 96.143,55.555 96.143,60.702C96.143,65.501 94.405,69.639 90.927,73.117C87.449,76.595 83.311,78.333 78.512,78.333L70.233,78.333C70.244,78.057 70.25,77.779 70.25,77.5C70.25,75.621 69.993,73.801 69.513,72.074L78.512,72.074C81.642,72.074 84.319,70.961 86.545,68.735C88.771,66.509 89.884,63.832 89.884,60.702C89.884,57.572 88.771,54.894 86.545,52.668C84.319,50.443 81.642,49.33 78.512,49.33L71.939,49.33L71.939,40.566C71.939,34.237 69.818,28.881 65.575,24.499C61.332,20.117 56.15,17.926 50.03,17.926C43.909,17.926 38.71,20.117 34.432,24.499C30.155,28.881 28.016,34.237 28.016,40.566L26.034,40.566C21.722,40.566 18.07,42.079 15.079,45.104C12.089,48.13 10.593,51.868 10.593,56.32C10.593,60.702 12.123,64.423 15.184,67.483C18.244,70.543 21.965,72.074 26.347,72.074L30.487,72.074C30.007,73.801 29.75,75.621 29.75,77.5C29.75,77.779 29.756,78.057 29.767,78.333Z" />
+        </g>
+        <g id="icon_browser">
+            <path fill="var(--color-secondary)"
+                d="M29.767,78.333L14.583,78.333C12.917,78.333 11.458,77.708 10.208,76.458C8.958,75.208 8.333,73.75 8.333,72.083L8.333,17.917C8.333,16.25 8.958,14.792 10.208,13.542C11.458,12.292 12.917,11.667 14.583,11.667L85.417,11.667C87.083,11.667 88.542,12.292 89.792,13.542C91.042,14.792 91.667,16.25 91.667,17.917L91.667,72.083C91.667,73.75 91.042,75.208 89.792,76.458C88.542,77.708 87.083,78.333 85.417,78.333L70.233,78.333C70.244,78.057 70.25,77.779 70.25,77.5C70.25,75.624 69.994,73.808 69.516,72.083L85.417,72.083L85.417,31.875L68.854,31.875L68.854,70.103C67.541,66.763 65.367,63.856 62.604,61.655L62.604,55.104L14.583,55.104L14.583,72.083L30.484,72.083C30.006,73.808 29.75,75.624 29.75,77.5C29.75,77.779 29.756,78.057 29.767,78.333ZM14.583,48.854L62.604,48.854L62.604,31.875L14.583,31.875L14.583,48.854Z" />
+        </g>
+        <g id="icon_working">
+            <path fill="var(--color-state-working)"
+                d="M50,55C62.418,55 72.5,65.082 72.5,77.5C72.5,89.918 62.418,100 50,100C37.582,100 27.5,89.918 27.5,77.5C27.5,65.082 37.582,55 50,55ZM46.194,86.313L62.206,70.3L60.594,68.688L46.194,83.088L39.406,76.3L37.794,77.912L46.194,86.313Z" />
+        </g>
+        <g id="icon_error">
+            <path fill="var(--color-state-error)"
+                d="M50,55C62.418,55 72.5,65.082 72.5,77.5C72.5,89.918 62.418,100 50,100C37.582,100 27.5,89.918 27.5,77.5C27.5,65.082 37.582,55 50,55ZM41.338,87.738L50,79.075L58.663,87.738L60.238,86.162L51.575,77.5L60.238,68.837L58.663,67.262L50,75.925L41.338,67.262L39.763,68.837L48.425,77.5L39.763,86.162L41.338,87.738Z" />
+        </g>
+        <g id="icon_forbidden">
+            <path fill="var(--color-state-forbidden)"
+                d="M50,55C62.418,55 72.5,65.082 72.5,77.5C72.5,89.918 62.418,100 50,100C37.582,100 27.5,89.918 27.5,77.5C27.5,65.082 37.582,55 50,55ZM63.5,76.273L36.5,76.273L36.5,78.727L63.5,78.727L63.5,76.273Z" />
+        </g>
+        <g id="icon_question">
+            <path fill="var(--color-state-question)"
+                d="M50,55C62.418,55 72.5,65.082 72.5,77.5C72.5,89.918 62.418,100 50,100C37.582,100 27.5,89.918 27.5,77.5C27.5,65.082 37.582,55 50,55ZM48.176,82.29L51.86,82.29C51.885,80.938 52.02,79.957 52.266,79.342C52.512,78.728 53.236,77.843 54.44,76.69C55.545,75.633 56.349,74.626 56.853,73.669C57.357,72.71 57.608,71.642 57.608,70.464C57.608,68.547 56.945,66.908 55.619,65.545C54.292,64.181 52.401,63.5 49.945,63.5C48.029,63.5 46.426,64.01 45.136,65.029C43.847,66.048 42.933,67.283 42.392,68.731L45.486,70.095C45.807,69.309 46.31,68.553 46.997,67.829C47.685,67.105 48.667,66.742 49.945,66.742C51.271,66.742 52.303,67.11 53.04,67.847C53.776,68.584 54.145,69.505 54.145,70.61C54.145,71.519 53.869,72.373 53.316,73.171C52.764,73.969 51.971,74.835 50.94,75.769C49.883,76.726 49.165,77.61 48.784,78.421C48.403,79.231 48.201,80.521 48.176,82.29ZM49.945,91.5C50.657,91.5 51.265,91.248 51.769,90.745C52.272,90.241 52.524,89.633 52.524,88.921C52.524,88.209 52.272,87.601 51.769,87.097C51.265,86.593 50.657,86.342 49.945,86.342C49.233,86.342 48.624,86.593 48.121,87.097C47.617,87.601 47.366,88.209 47.366,88.921C47.366,89.633 47.617,90.241 48.121,90.745C48.624,91.248 49.233,91.5 49.945,91.5Z" />
+        </g>
+        <g id="icon_help">
+            <path fill="var(--color-primary)"
+                d="M64.376,100L63.124,86.251L58.124,86.251C46.207,86.251 36.042,82.042 27.624,73.624C19.207,65.207 15,55.042 15,43.124C15,31.207 19.229,21.042 27.688,12.624C36.146,4.207 46.376,0 58.376,0C64.293,0 69.771,1.062 74.813,3.188C79.854,5.313 84.251,8.293 88,12.124C91.751,15.958 94.688,20.479 96.813,25.688C98.938,30.896 100,36.583 100,42.751C100,48.251 99.188,53.751 97.563,59.251C95.938,64.751 93.583,70 90.5,75C87.417,80 83.666,84.624 79.249,88.876C74.834,93.124 69.876,96.834 64.376,100ZM70.624,86.5C77.458,80.751 82.813,73.979 86.688,66.188C90.563,58.396 92.5,50.583 92.5,42.751C92.5,32.417 89.271,23.958 82.813,17.376C76.354,10.793 68.207,7.5 58.376,7.5C48.376,7.5 39.896,10.979 32.938,17.938C25.979,24.896 22.5,33.293 22.5,43.124C22.5,52.958 25.979,61.354 32.938,68.313C39.896,75.271 48.293,78.751 58.124,78.751L70.624,78.751L70.624,86.5ZM58.376,72.124C59.707,72.124 60.834,71.666 61.749,70.751C62.666,69.834 63.124,68.707 63.124,67.376C63.124,66.042 62.666,64.917 61.749,64C60.834,63.083 59.707,62.624 58.376,62.624C57.042,62.624 55.917,63.083 55,64C54.083,64.917 53.624,66.042 53.624,67.376C53.624,68.707 54.083,69.834 55,70.751C55.917,71.666 57.042,72.124 58.376,72.124ZM55,55.124L61.249,55.124C61.249,53.042 61.604,51.313 62.313,49.938C63.021,48.563 64.5,46.751 66.749,44.5C69,42.249 70.583,40.188 71.5,38.313C72.417,36.438 72.876,34.417 72.876,32.251C72.876,28.5 71.604,25.417 69.063,23C66.521,20.583 63.124,19.376 58.876,19.376C55.376,19.376 52.249,20.293 49.5,22.124C46.749,23.958 44.707,26.458 43.376,29.624L49.124,32C50.042,29.834 51.313,28.229 52.938,27.188C54.563,26.146 56.417,25.624 58.5,25.624C61,25.624 62.958,26.229 64.376,27.438C65.793,28.646 66.5,30.249 66.5,32.251C66.5,33.834 66.042,35.438 65.124,37.063C64.207,38.688 62.583,40.707 60.249,43.124C58,45.458 56.563,47.334 55.938,48.751C55.313,50.166 55,52.293 55,55.124Z" />
+        </g>
+    </svg>
+
+    <main>
+        <div id="browser" data-state="question" test="{{ status_icon.browser }}">
+            <svg viewBox="0 0 100 100" height="7.5em" width="7.5em">
+                <use href="#icon_browser" />
+
+                <use data-tag="error" href="#icon_error" />
+                <use data-tag="working" href="#icon_working" />
+                <use data-tag="forbidden" href="#icon_forbidden" />
+                <use data-tag="question" href="#icon_question" />
+            </svg>
+
+            <p>You</p>
+            <h3>Browser</h3>
+            <h4 data-tag="error" id="text_error">Error</h4>
+            <h4 data-tag="working" id="text_working">Working</h4>
+            <h4 data-tag="forbidden" id="text_forbidden">Forbidden</h4>
+            <h4 data-tag="question" id="text_question">Unknown</h4>
+        </div>
+
+        <div id="arrow_horinzontal">
+            <svg viewBox=" 0 0 100 100" height="7.5em" width="7.5em">
+                <use href="#icon_arrow_horinzontal" />
+            </svg>
+        </div>
+        <div id="arrow_vertical">
+            <svg viewBox=" 0 0 100 100" height="7.5em" width="7.5em">
+                <use href="#icon_arrow_vertical" />
+            </svg>
+        </div>
+
+        <div id="proxy" data-state="{{ status_icon.reverse_proxy }}">
+            <svg viewBox="0 0 100 100" height="7.5em" width="7.5em">
+                <use href="#icon_proxy" />
+
+                <use data-tag="error" href="#icon_error" />
+                <use data-tag="working" href="#icon_working" />
+                <use data-tag="forbidden" href="#icon_forbidden" />
+                <use data-tag="question" href="#icon_question" />
+            </svg>
+
+            <p>{{ env['PROXY_LOCATION'] | escape }}</p>
+            <h3>Reverse Proxy</h3>
+            <h4 data-tag="error" id="text_error">Error</h4>
+            <h4 data-tag="working" id="text_working">Working</h4>
+            <h4 data-tag="forbidden" id="text_forbidden">Forbidden</h4>
+            <h4 data-tag="question" id="text_question">Unknown</h4>
+        </div>
+
+        <div id="arrow_horinzontal">
+            <svg viewBox=" 0 0 100 100" height="7.5em" width="7.5em">
+                <use href="#icon_arrow_horinzontal" />
+            </svg>
+        </div>
+        <div id="arrow_vertical">
+            <svg viewBox=" 0 0 100 100" height="7.5em" width="7.5em">
+                <use href="#icon_arrow_vertical" />
+            </svg>
+        </div>
+
+
+        <div id="service" data-state="{{ status_icon.service }}">
+            <svg viewBox="0 0 100 100" height="7.5em" width="7.5em">
+                <use href="#icon_service" />
+
+                <use data-tag="error" href="#icon_error" />
+                <use data-tag="working" href="#icon_working" />
+                <use data-tag="forbidden" href="#icon_forbidden" />
+                <use data-tag="question" href="#icon_question" />
+            </svg>
+
+            <p>
+                <script>
+                    document.write(window.location.hostname);
+                </script>
+                <noscript>
+                    Unknown
+                </noscript>
+            </p>
+            <h3>Service</h3>
+            <h4 data-tag="error" id="text_error">Error</h4>
+            <h4 data-tag="working" id="text_working">Working</h4>
+            <h4 data-tag="forbidden" id="text_forbidden">Forbidden</h4>
+            <h4 data-tag="question" id="text_question">Unknown</h4>
+        </div>
+    </main>
+    <footer>
+        <div id="container_error">
+            <h2>What happened?</h2>
+            <p>The request could not be passed to the target system, the following error occurred:</p>
+            <p>{{ status_description | escape }}</p>
+        </div>
+        <div id="container_help">
+            <div id="info_text">
+                <h2>What can I do?</h2>
+                <p>{{ env['PROXY_SUPPORT_MESSAGE'] | escape }}</p>
+                <a href="mailto:{{ env['PROXY_SUPPORT_MAIL'] | urlencode }}">
+                    {{ env['PROXY_SUPPORT_MAIL'] | escape }}
+                </a>
+            </div>
+            <div id="info_logo">
+                <svg height="80%" viewBox="0 0 100 100">
+                    <use href="#icon_help" style="opacity: 0.35;" />
+                </svg>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
