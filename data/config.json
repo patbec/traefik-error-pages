@@ -9,7 +9,7 @@
   "server": [
     {
       "request": {
-        "path": "/status_400.html",
+        "path": "/400.html",
         "response": 400
       },
       "template_file": "index.html",
@@ -19,8 +19,671 @@
         "status_description": "The server cannot or will not process the request due to an apparent client error (e.g., malformed request syntax, size too large, invalid request message framing, or deceptive request routing).",
         "status_icon": {
           "browser": "working",
-          "reverse_proxy": "error",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/401.html",
+        "response": 401
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 401,
+        "status_text": "Unauthorized",
+        "status_description": "Access to this resource is blocked, try using the company VPN.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "forbidden"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/403.html",
+        "response": 403
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 403,
+        "status_text": "Forbidden",
+        "status_description": "The request contained valid data and was understood by the server, but the server is refusing action. This may be due to the user not having the necessary permissions for a resource or needing an account of some sort, or attempting a prohibited action.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "forbidden"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/404.html",
+        "response": 404
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 404,
+        "status_text": "Not Found",
+        "status_description": "The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/405.html",
+        "response": 405
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 405,
+        "status_text": "Method Not Allowed",
+        "status_description": "A request method is not supported for the requested resource; for example, a GET request on a form that requires data to be presented via POST, or a PUT request on a read-only resource.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/406.html",
+        "response": 406
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 406,
+        "status_text": "Not Acceptable",
+        "status_description": "A request method is not supported for the requested resource; for example, a GET request on a form that requires data to be presented via POST, or a PUT request on a read-only resource.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/407.html",
+        "response": 407
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 407,
+        "status_text": "Proxy Authentication Required",
+        "status_description": "The client must first authenticate itself with the proxy.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "forbidden"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/408.html",
+        "response": 408
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 408,
+        "status_text": "Request Timeout",
+        "status_description": "The server timed out waiting for the request.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/409.html",
+        "response": 409
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 409,
+        "status_text": "Conflict",
+        "status_description": "Indicates that the request could not be processed because of conflict in the current state of the resource, such as an edit conflict between multiple simultaneous updates.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/410.html",
+        "response": 410
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 410,
+        "status_text": "Gone",
+        "status_description": "Indicates that the resource requested was previously in use but is no longer available and will not be available again.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/411.html",
+        "response": 411
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 411,
+        "status_text": "Length Required",
+        "status_description": "The request did not specify the length of its content, which is required by the requested resource.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/412.html",
+        "response": 412
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 412,
+        "status_text": "Precondition Failed",
+        "status_description": "The server does not meet one of the preconditions that the requester put on the request header fields.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/413.html",
+        "response": 413
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 413,
+        "status_text": "Payload Too Large",
+        "status_description": "The request is larger than the server is willing or able to process.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/414.html",
+        "response": 414
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 414,
+        "status_text": "URI Too Long",
+        "status_description": "The URI provided was too long for the server to process.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/415.html",
+        "response": 415
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 415,
+        "status_text": "Unsupported Media Type",
+        "status_description": "The request entity has a media type which the server or resource does not support.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/416.html",
+        "response": 416
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 416,
+        "status_text": "Range Not Satisfiable",
+        "status_description": "The client has asked for a portion of the file (byte serving), but the server cannot supply that portion.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/417.html",
+        "response": 417
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 417,
+        "status_text": "Expectation Failed",
+        "status_description": "The server cannot meet the requirements of the Expect request-header field.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/418.html",
+        "response": 418
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 418,
+        "status_text": "I'm a teapot",
+        "status_description": "The RFC specifies this code should be returned by teapots requested to brew coffee.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
           "service": "working"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/421.html",
+        "response": 421
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 421,
+        "status_text": "Misdirected Request",
+        "status_description": "The request was directed at a server that is not able to produce a response.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/422.html",
+        "response": 422
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 422,
+        "status_text": "Unprocessable Entity",
+        "status_description": "The request was well-formed but was unable to be followed due to semantic errors.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/423.html",
+        "response": 423
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 423,
+        "status_text": "Locked",
+        "status_description": "The resource that is being accessed is locked.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/424.html",
+        "response": 424
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 424,
+        "status_text": "Failed Dependency",
+        "status_description": "The request failed because it depended on another request and that request failed.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/425.html",
+        "response": 425
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 425,
+        "status_text": "Too Early",
+        "status_description": "Indicates that the server is unwilling to risk processing a request that might be replayed.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/426.html",
+        "response": 426
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 426,
+        "status_text": "Upgrade Required",
+        "status_description": "The client should switch to a different protocol such as TLS/1.3, given in the Upgrade header field.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/428.html",
+        "response": 428
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 428,
+        "status_text": "Precondition Required",
+        "status_description": "The origin server requires the request to be conditional.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/429.html",
+        "response": 429
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 429,
+        "status_text": "Too Many Requests",
+        "status_description": "The user has sent too many requests in a given amount of time.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "forbidden"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/431.html",
+        "response": 431
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 431,
+        "status_text": "Request Header Fields Too Large",
+        "status_description": "The server is unwilling to process the request because either an individual header field, or all the header fields collectively, are too large.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/451.html",
+        "response": 451
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 451,
+        "status_text": "Unavailable For Legal Reasons",
+        "status_description": "A server operator has received a legal demand to deny access to a resource or to a set of resources that includes the requested resource.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/500.html",
+        "response": 500
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 500,
+        "status_text": "Internal Server Error",
+        "status_description": "A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/501.html",
+        "response": 501
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 501,
+        "status_text": "Not Implemented",
+        "status_description": "The server either does not recognize the request method, or it lacks the ability to fulfil the request. Usually this implies future availability.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/502.html",
+        "response": 502
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 502,
+        "status_text": "Bad Gateway",
+        "status_description": "The server was acting as a gateway or proxy and received an invalid response from the upstream server.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/503.html",
+        "response": 503
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 503,
+        "status_text": "Service Unavailable",
+        "status_description": "The server cannot handle the request (because it is overloaded or down for maintenance). Generally, this is a temporary state.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/504.html",
+        "response": 504
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 504,
+        "status_text": "Gateway Timeout",
+        "status_description": "The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/505.html",
+        "response": 505
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 505,
+        "status_text": "HTTP Version Not Supported",
+        "status_description": "The server does not support the HTTP version used in the request.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/506.html",
+        "response": 506
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 506,
+        "status_text": "Variant Also Negotiates",
+        "status_description": "Transparent content negotiation for the request results in a circular reference.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/507.html",
+        "response": 507
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 507,
+        "status_text": "Insufficient Storage",
+        "status_description": "The server is unable to store the representation needed to complete the request.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/508.html",
+        "response": 508
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 508,
+        "status_text": "Loop Detected",
+        "status_description": "The server detected an infinite loop while processing the request.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/510.html",
+        "response": 510
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 510,
+        "status_text": "Not Extended",
+        "status_description": "Further extensions to the request are required for the server to fulfil it.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/511.html",
+        "response": 511
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 511,
+        "status_text": "Network Authentication Required",
+        "status_description": "The client needs to authenticate to gain network access. Intended for use by intercepting proxies used to control access to the network.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "working",
+          "service": "error"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/",
+        "response": 404
+      },
+      "template_file": "index.html",
+      "variables": {
+        "status_code": 404,
+        "status_text": "Not Found",
+        "status_description": "The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible.",
+        "status_icon": {
+          "browser": "working",
+          "reverse_proxy": "error",
+          "service": "question"
         }
       }
     }
