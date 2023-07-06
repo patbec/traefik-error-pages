@@ -5,6 +5,35 @@ This project contains customizable error pages for the Traefik reverse proxy.
 ![Screenshot of a 404 error page](docs/screenshot-light.png#gh-light-mode-only)
 ![Screenshot of a 404 error page](docs/screenshot-dark.png#gh-dark-mode-only)
 
+## Features
+
+A short list of what features the front-end offers.
+
+<b>Supported device classes:</b><br>
+✅ Smartphones<br>
+✅ Tablets<br>
+✅ Laptops<br>
+✅ Desktops<br>
+❌ Foldable devices<br>
+❌ Handhelds<br>
+
+<b>Supported views:</b><br>
+✅ Night view<br>
+✅ Day view<br>
+✅ High contrast view <sup>(1)</sup>
+
+<b>High-DPI support:</b><br>
+✅ Yes - SVGs are used<br>
+
+<b>Multilanguage:</b><br>
+❌ No - English only<br>
+
+<br>
+
+<sup>(1)</sup>
+High contrast view is for people with low vision. Activate the `forced-colors` scheme under `More Tools -> Rendering` in Chrome Dev Tools to get a preview.<br>
+The colors used are determined by the browser, see at W3C CSS Color Module Level 4 - [6.2. System Colors](https://www.w3.org/TR/css-color-4/#css-system-colors).
+
 ## Usage
 
 Create a new section in the Traefik `docker-compose.yml` file:
