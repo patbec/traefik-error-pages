@@ -1,0 +1,46 @@
+version: '3.9'
+services:
+  traefik:
+    container_name: traefik
+    image: "traefik:v2.9.8"
+    restart: "no"
+    depends_on:
+      - error-pages
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    ports:
+      - "80:80"
+  nginx:
+    image: nginx
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nginx.rule: Host(`web.localhost`)
+      traefik.http.routers.nginx.entrypoints: web
+      traefik.http.routers.nginx.middlewares: error-pages-middleware
+  error-pages:
+    build: ../
+    restart: "no"
+    environment:
+      PROXY_NAME: traefik-test
+      PROXY_LOCATION: local
+      PROXY_SUPPORT_MESSAGE: |
+        If you need further assistance with this issue,
+        you can contact the support. They will forward
+        your request to the appropriate department.<br>
+      PROXY_SUPPORT_MAIL: support@sample.com
+    labels:
+      traefik.enable: true
+      traefik.http.services.error-pages-service.loadbalancer.server.port: 8090
+
+      traefik.http.middlewares.error-pages-middleware.errors.status: 400-599
+      traefik.http.middlewares.error-pages-middleware.errors.service: error-pages-service
+      traefik.http.middlewares.error-pages-middleware.errors.query: /{status}.html
+
+      traefik.http.routers.error-pages-routers.rule: HostRegexp(`{host:.+}`)
+      traefik.http.routers.error-pages-routers.priority: 1
+      traefik.http.routers.error-pages-routers.entrypoints: web
