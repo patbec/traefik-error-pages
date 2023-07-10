@@ -36,13 +36,73 @@ The colors used are determined by the browser, see at W3C CSS Color Module Level
 
 ## Usage
 
+Here is a short tutorial on how to enable error pages for Traefik. After inserting the code section, the flow should look like this:
+
+![Traefik errorpages flow](https://doc.traefik.io/traefik/assets/img/middleware/errorpages.png)
+<p align="right">
+<a href="https://doc.traefik.io/traefik/middlewares/http/errorpages/">Read documentation on traefik.io</a>
+</p>
+
 Create a new section in the Traefik `docker-compose.yml` file:
+```yaml
+  error-pages:
+    image: "ghcr.io/patbec/traefik-error-pages:latest"
+    environment:
+      PROXY_NAME: traefik
+      PROXY_LOCATION: Placeholder
+      PROXY_SUPPORT_MESSAGE: Placeholder
+      PROXY_SUPPORT_MAIL: Placeholder
+    labels:
+      traefik.http.services.error-pages-service.loadbalancer.server.port: 8090
 
-```
-TODO: Code
+      traefik.http.middlewares.error-pages-middleware.errors.status: 400-599
+      traefik.http.middlewares.error-pages-middleware.errors.service: error-pages-service
+      traefik.http.middlewares.error-pages-middleware.errors.query: /{status}.html
+
+      traefik.http.routers.error-pages-routers.rule: HostRegexp(`{host:.+}`)
+      traefik.http.routers.error-pages-routers.priority: 1
+      traefik.http.routers.error-pages-routers.entrypoints: web
 ```
 
-The environment variable `PROXY_NAME`, `PROXY_LOCATION`, `PROXY_SUPPORT_MAIL` and `PROXY_SUPPORT_MESSAGE` are required and will be inserted into the template.
+In this section there are 2 types of error handling:
+  - The **Middleware** handle service errors, if a web server returns an http error, the corresponding error page is displayed.
+  - The **Router** handle errors that occur at a higher level, such as a subdomain was not found.
+
+Assign the middleware to your service:
+```yaml
+  nginx:
+    image: "nginx"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nginx.rule: Host(`web.localhost`)
+      traefik.http.routers.nginx.entrypoints: web
+      traefik.http.routers.nginx.middlewares: error-pages-middleware
+```
+
+Raise both types of errors:
+- Request the non-existent `http://web.localhost/sample` page to display an service error.
+- Request the unknown subdomain `http://sample.localhost` to get an router error.
+
+## Example
+
+You can find two complete examples in the `docs` folder.
+
+
+The file [docker-compose.yml](docs/docker-compose.yml) contains the source from the screenshot:
+```
+cd docs
+docker compose -f docker-compose.yml up
+```
+
+The file [docker-compose.dev.yml](docs/docker-compose.dev.yml) rebuilds the container and includes local changes from the template or configuration file:
+```
+cd docs
+docker compose -f docker-compose.dev.yml up --build
+```
+
+## Configuration
+
+The following environment variables are required and will be inserted into the template. Define these in your `docker-compose.yml` file.
 
 | Variable                | Description                                      |
 | ----------------------- | ------------------------------------------------ |
@@ -97,6 +157,8 @@ The following error pages are supported:
 | `510`       | Not Extended                    |
 | `511`       | Network Authentication Required |
 
+> There are 2 different `404` error pages included, the first one is sent back when a service returns an HTTP error, the other when the reverse proxy cannot find a route.
+
 ## Trace
 
 The page has a trace string, which contains the following information as a Base64 string:
@@ -107,7 +169,7 @@ The page has a trace string, which contains the following information as a Base6
 | `Status`   | HTTP Status code.  |
 | `Location` | Website address.   |
 
-> Info: These values are created in the browser on the client side and should only give a short overview.
+> Note: These values are created in the browser on the client side and should only give a short overview.
 
 ## Create your own page
 
