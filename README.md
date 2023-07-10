@@ -38,9 +38,10 @@ The colors used are determined by the browser, see at W3C CSS Color Module Level
 
 Here is a short tutorial on how to enable error pages for Traefik. After inserting the code section, the flow should look like this:
 
-![Traefik errorpages flow](https://doc.traefik.io/traefik/assets/img/middleware/errorpages.png)
+![Traefik errorpages flow](docs/traefik-routing-light.png#gh-light-mode-only)
+![Traefik errorpages flow](docs/traefik-routing-dark.png#gh-dark-mode-only)
 <p align="right">
-<a href="https://doc.traefik.io/traefik/middlewares/http/errorpages/">Read documentation on traefik.io</a>
+<a href="https://doc.traefik.io/traefik/middlewares/http/errorpages/">Read the documentation on traefik.io</a>
 </p>
 
 Create a new section in the Traefik `docker-compose.yml` file:
