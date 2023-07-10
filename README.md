@@ -88,7 +88,6 @@ Raise both types of errors:
 
 You can find two complete examples in the `docs` folder.
 
-
 The file [docker-compose.yml](docs/docker-compose.yml) contains the source from the screenshot:
 ```shell
 cd docs
