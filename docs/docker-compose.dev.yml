@@ -29,10 +29,13 @@ services:
     build: ../
     restart: "no"
     environment:
-      PROXY_NAME: traefik
-      PROXY_LOCATION: Placeholder
-      PROXY_SUPPORT_MESSAGE: Placeholder
-      PROXY_SUPPORT_MAIL: Placeholder
+      PROXY_NAME: traefik-test
+      PROXY_LOCATION: Bavaria
+      PROXY_SUPPORT_MESSAGE: |
+        If you need further assistance with this issue,
+        you can contact the support. They will forward
+        your request to the appropriate department.
+      PROXY_SUPPORT_MAIL: support@sample.com
     labels:
       traefik.enable: true
       traefik.http.services.error-pages-service.loadbalancer.server.port: 8090
