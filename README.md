@@ -113,6 +113,8 @@ The following environment variables are required and will be inserted into the t
 | `PROXY_SUPPORT_MAIL`    | Support email address displayed to the customer. |
 | `PROXY_SUPPORT_MESSAGE` | Support message displayed to the customer.       |
 
+[Here you can find a preview](https://patbec.github.io/traefik-error-pages/) of the HTML template without inserted variables.
+
 ## Pages
 
 The following error pages are supported:
