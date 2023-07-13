@@ -80,6 +80,8 @@ Assign the middleware to your service:
       traefik.http.routers.nginx.middlewares: error-pages-middleware
 ```
 
+The router does not need any assignment.
+
 Raise both types of errors:
 - Request the non-existent `http://web.localhost/sample` page to display an service error.
 - Request the unknown subdomain `http://sample.localhost` to get an router error.
