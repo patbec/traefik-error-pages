@@ -26,7 +26,7 @@ services:
       traefik.http.routers.nginx.middlewares: exceptions
   error-pages:
     container_name: error-pages
-    build: ../
+    build: ../../../
     restart: "no"
     environment:
       PROXY_NAME: traefik-test
