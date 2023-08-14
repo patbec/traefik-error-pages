@@ -23,11 +23,11 @@ services:
       traefik.enable: true
       traefik.http.routers.nginx.rule: Host(`web.localhost`)
       traefik.http.routers.nginx.entrypoints: web
-      traefik.http.routers.nginx.middlewares: error-pages-middleware
+      traefik.http.routers.nginx.middlewares: exceptions
   error-pages:
     container_name: error-pages
-    build: ../
-    restart: "no"
+    image: "ghcr.io/patbec/traefik-error-pages:latest"
+    restart: "on-failure"
     environment:
       PROXY_NAME: traefik-test
       PROXY_LOCATION: Bavaria
@@ -40,9 +40,9 @@ services:
       traefik.enable: true
       traefik.http.services.error-pages-service.loadbalancer.server.port: 8090
 
-      traefik.http.middlewares.error-pages-middleware.errors.status: 400-599
-      traefik.http.middlewares.error-pages-middleware.errors.service: error-pages-service
-      traefik.http.middlewares.error-pages-middleware.errors.query: /{status}.html
+      traefik.http.middlewares.exceptions.errors.status: 400-599
+      traefik.http.middlewares.exceptions.errors.service: error-pages-service
+      traefik.http.middlewares.exceptions.errors.query: /{status}.html
 
       traefik.http.routers.error-pages-routers.rule: HostRegexp(`{host:.+}`)
       traefik.http.routers.error-pages-routers.priority: 1

@@ -1,0 +1,36 @@
+http:
+  routers:
+    nginx:
+      rule: Host(`web.localhost`)
+      service: service-nginx
+      middlewares:
+        - error-pages-middleware
+      entrypoints:
+        - web
+
+    error-pages:
+      rule: HostRegexp(`{host:.+}`)
+      priority: 1
+      service: exceptions
+      entryPoints:
+        - web
+
+  services:
+    service-nginx:
+      loadbalancer:
+        servers:
+          - url: http://<your-ip>:80
+
+    service-error-pages:
+      loadbalancer:
+        servers:
+          - url: http://<your-ip>:8090
+
+  middlewares:
+    # Handle service exceptions.
+    exceptions:
+      errors:
+        status:
+          - "400-599"
+      service: service-error-pages
+      query: "/{status}.html"

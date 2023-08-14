@@ -86,21 +86,23 @@ Raise both types of errors:
 - Request the non-existent `http://web.localhost/sample` page to display an service error.
 - Request the unknown subdomain `http://sample.localhost` to get an router error.
 
-## Example
+## Examples
 
-You can find two complete examples in the `docs/samples` folder.
+You can find three complete examples in the `docs/samples` folder.
 
-The file [docker-compose.prod.yml](docs/samples/docker-compose.prod.yml) contains the source from the screenshot:
+The file [docker-compose.prod.yml](docs/samples/docker/docker-compose.prod.yml) contains the source from the screenshot:
 ```shell
-cd docs/samples
+cd docs/samples/docker
 docker compose -f docker-compose.prod.yml up
 ```
 
-The file [docker-compose.dev.yml](docs/samples/docker-compose.dev.yml) rebuilds the container and includes local changes from the template or configuration file:
+The file [docker-compose.dev.yml](docs/samples/docker/docker-compose.dev.yml) rebuilds the container and includes local changes from the template or configuration file:
 ```shell
-cd docs/samples
+cd docs/samples/docker
 docker compose -f docker-compose.dev.yml up --build
 ```
+
+The file [config.yml](docs/samples/file/config.yml) and [traefik.yml](docs/samples/file/traefik.yml) are an alternative for non-Docker environments. The default search path for this type of config file is `/etc/traefik/`, [see here for more information.](https://doc.traefik.io/traefik/getting-started/configuration-overview/#configuration-file)
 
 ## Configuration
 

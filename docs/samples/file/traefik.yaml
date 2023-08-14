@@ -1,0 +1,33 @@
+log:
+  level: DEBUG
+
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+# certificatesResolvers:
+#   myResolver:
+#     acme:
+#       tlsChallenge: {}
+#       email: mail@test.com
+#       storage: /<your-path>/acme.json
+
+providers:
+  file:
+    filename: /<your-path>/config.yml
+    watch: true
+
+entryPoints:
+  web:
+    address: ":80"
+  #   http:
+  #     redirections:
+  #       entryPoint:
+  #         to: websecure
+  #         scheme: gttps
+  #         permanent: true
+  # websecure:
+  #   address: ":443"
+  #   http:
+  #     tls:
+  #       certResolver: myResolver
