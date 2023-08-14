@@ -27,7 +27,7 @@ services:
   error-pages:
     container_name: error-pages
     image: "ghcr.io/patbec/traefik-error-pages:latest"
-    restart: "no"
+    restart: "on-failure"
     environment:
       PROXY_NAME: traefik-test
       PROXY_LOCATION: Bavaria

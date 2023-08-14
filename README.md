@@ -88,17 +88,17 @@ Raise both types of errors:
 
 ## Example
 
-You can find two complete examples in the `docs` folder.
+You can find two complete examples in the `docs/samples` folder.
 
-The file [docker-compose.yml](docs/docker-compose.yml) contains the source from the screenshot:
+The file [docker-compose.prod.yml](docs/samples/docker-compose.prod.yml) contains the source from the screenshot:
 ```shell
-cd docs
-docker compose -f docker-compose.yml up
+cd docs/samples
+docker compose -f docker-compose.prod.yml up
 ```
 
-The file [docker-compose.dev.yml](docs/docker-compose.dev.yml) rebuilds the container and includes local changes from the template or configuration file:
+The file [docker-compose.dev.yml](docs/samples/docker-compose.dev.yml) rebuilds the container and includes local changes from the template or configuration file:
 ```shell
-cd docs
+cd docs/samples
 docker compose -f docker-compose.dev.yml up --build
 ```
 
