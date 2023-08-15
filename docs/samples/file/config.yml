@@ -4,14 +4,14 @@ http:
       rule: Host(`web.localhost`)
       service: service-nginx
       middlewares:
-        - error-pages-middleware
+        - exceptions
       entrypoints:
         - web
 
     error-pages:
       rule: HostRegexp(`{host:.+}`)
       priority: 1
-      service: exceptions
+      service: service-error-pages
       entryPoints:
         - web
 
